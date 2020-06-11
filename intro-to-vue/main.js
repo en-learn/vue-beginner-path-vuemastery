@@ -20,12 +20,19 @@ var app = new Vue({
     ],
     cart: 0,
   },
+  computed: {
+    inStock() {
+      return this.inventory > 0;
+    },
+  },
   methods: {
     addToCart() {
       this.cart += 1;
+      this.inventory -= 1;
     },
     removeFromCart() {
       this.cart -= 1;
+      this.inventory += 1;
     },
     updateProduct(variantImage) {
       this.image = variantImage;
