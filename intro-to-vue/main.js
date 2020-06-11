@@ -2,8 +2,8 @@ Vue.component('product', {
   props: {
     premium: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   template: `
     <div class="product">
@@ -36,17 +36,6 @@ Vue.component('product', {
         >
           Add to Cart
         </button>
-        <button
-          v-if="cart > 0"
-          @click="removeFromCart"
-          style="background-color: red;"
-        >
-          Remove from Cart
-        </button>
-
-        <div class="cart">
-          <p>Cart({{ cart }})</p>
-        </div>
       </div>
     </div>
   `,
@@ -71,7 +60,6 @@ Vue.component('product', {
           variantQuantity: 0,
         },
       ],
-      cart: 0,
     }
   },
   computed: {
@@ -86,17 +74,14 @@ Vue.component('product', {
     },
     shipping() {
       if (this.premium) {
-        return "Free"
+        return 'Free'
       }
-      return "2.99"
-    }
+      return '2.99'
+    },
   },
   methods: {
     addToCart() {
-      this.cart += 1
-    },
-    removeFromCart() {
-      this.cart -= 1
+      this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId)
     },
     updateProduct(index) {
       this.selectedVariant = index
@@ -107,6 +92,12 @@ Vue.component('product', {
 var app = new Vue({
   el: '#app',
   data: {
-    premium: true
+    premium: true,
+    cart: [],
+  },
+  methods: {
+    updateCart(id) {
+      this.cart.push(id)
+    }
   }
 })
